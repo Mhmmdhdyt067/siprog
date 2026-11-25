@@ -1,0 +1,202 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Landing page — 3D reveal + hero tilt */
+[data-aos="reveal-3d"] {
+    opacity: 0;
+    transform: perspective(1100px) rotateX(-9deg) translate3d(0, 30px, 0);
+    transform-origin: 50% 100%;
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+[data-aos="reveal-3d"].aos-animate {
+    opacity: 1;
+    transform: perspective(1100px) rotateX(0deg) translate3d(0, 0, 0);
+}
+
+.hero-3d-stage {
+    perspective: 1200px;
+    perspective-origin: 50% 40%;
+}
+
+.hero-3d-inner {
+    transform-style: preserve-3d;
+    transform: rotateX(var(--hero-tilt-x, 0deg)) rotateY(var(--hero-tilt-y, 0deg));
+    transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .hero-3d-card {
+        animation: hero-card-float 8s ease-in-out infinite;
+    }
+
+    .hero-3d-card:nth-child(2) {
+        animation-delay: -1.8s;
+    }
+
+    .hero-3d-card:nth-child(3) {
+        animation-delay: -3.4s;
+    }
+
+    .hero-3d-card:nth-child(4) {
+        animation-delay: -5.2s;
+    }
+
+    .hero-3d-card:nth-child(5) {
+        animation-delay: -6.6s;
+    }
+
+    @keyframes hero-card-float {
+        0%,
+        100% {
+            translate: 0 0;
+        }
+
+        50% {
+            translate: 0 -9px;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-3d-inner {
+        transform: none !important;
+    }
+
+    .hero-3d-card {
+        animation: none !important;
+    }
+}
+
+
+/* App shell — form controls stay inside their grid/flex tracks */
+@layer base {
+    input,
+    select,
+    textarea {
+        min-width: 0;
+        max-width: 100%;
+    }
+}
+
+/* QR projector frame — the generated SVG scales with its card */
+.qr-frame svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* App UI primitives — shared across dashboard, CRUD, and profile pages */
+@layer components {
+    .card {
+        @apply rounded-[26px] border border-black/5 bg-white;
+    }
+
+    .card-soft {
+        @apply rounded-[22px] border border-black/5 bg-[#F9F9F6];
+    }
+
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-[10px] font-extrabold uppercase tracking-[0.14em] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0A66C8]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+    }
+
+    .btn-sm {
+        @apply px-3 py-2 text-[9px] tracking-[0.12em];
+    }
+
+    .btn-primary {
+        @apply bg-[#0B0B0C] text-white hover:bg-[#0A66C8];
+    }
+
+    .btn-lime {
+        @apply bg-[#C8F24D] text-[#0B0B0C] hover:bg-[#DAFF73];
+    }
+
+    .btn-light {
+        @apply border border-black/10 bg-white text-slate-600 hover:bg-[#F5F5F2] hover:text-[#0B0B0C];
+    }
+
+    .btn-sky {
+        @apply bg-[#0A66C8] text-white hover:bg-[#0B5FC0];
+    }
+
+    .btn-danger {
+        @apply bg-rose-600 text-white hover:bg-rose-700;
+    }
+
+    .btn-danger-soft {
+        @apply border border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-100;
+    }
+
+    .icon-btn {
+        @apply grid h-8 w-8 place-items-center rounded-lg border border-black/5 bg-white text-slate-500 transition hover:bg-[#F5F5F2] hover:text-[#0B0B0C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0A66C8]/30;
+    }
+
+    .chip {
+        @apply inline-flex items-center gap-1.5 rounded-full border border-black/5 bg-[#F5F5F2] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500;
+    }
+
+    .chip-sky {
+        @apply border-[#0A66C8]/15 bg-[#EAF4FF] text-[#0A66C8];
+    }
+
+    .chip-lime {
+        @apply border-[#C8F24D]/60 bg-[#F7FFD9] text-[#3F5200];
+    }
+
+    .chip-emerald {
+        @apply border-emerald-200 bg-emerald-50 text-emerald-700;
+    }
+
+    .chip-amber {
+        @apply border-amber-200 bg-amber-50 text-amber-700;
+    }
+
+    .chip-rose {
+        @apply border-rose-200 bg-rose-50 text-rose-600;
+    }
+
+    .chip-indigo {
+        @apply border-indigo-200 bg-[#F1EEFF] text-indigo-700;
+    }
+
+    .field-label {
+        @apply block text-[9px] font-extrabold uppercase tracking-[0.16em] text-slate-500;
+    }
+
+    .field-input {
+        @apply mt-1.5 w-full rounded-xl border border-black/10 bg-[#F7F7F4] px-3.5 py-2.5 text-[13px] text-[#0B0B0C] placeholder:font-normal placeholder:text-slate-400 focus:border-[#0A66C8] focus:ring-2 focus:ring-[#0A66C8]/20;
+    }
+
+    .field-help {
+        @apply mt-1.5 text-[10.5px] leading-relaxed text-slate-500;
+    }
+
+    .field-error {
+        @apply mt-1.5 text-[11px] font-medium leading-relaxed text-rose-600;
+    }
+
+    .table-head {
+        @apply bg-[#F5F5F2] text-[9px] font-extrabold uppercase tracking-[0.14em] text-slate-500;
+    }
+
+    .row-action {
+        @apply inline-flex items-center gap-1.5 rounded-full border border-black/5 bg-white px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.1em] text-slate-500 transition hover:border-black/10 hover:bg-[#F5F5F2] hover:text-[#0B0B0C];
+    }
+}
+
+/* Chart canvases keep a stable height inside their cards */
+.chart-box {
+    position: relative;
+    width: 100%;
+    height: 15rem;
+}
+
+.chart-box canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
