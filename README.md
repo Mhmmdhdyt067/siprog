@@ -1,58 +1,137 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SI-PROG
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem informasi praktikum mata kuliah Algoritma Pemrograman. Satu tempat untuk presensi QR, pre-test, tugas mingguan, penilaian, dan transparansi nilai.
 
-## About Laravel
+Aplikasi punya tiga peran: mahasiswa, asisten, admin. Halaman `/` adalah portal publik berisi jadwal dan pengumuman kelas. Fitur lain baru terbuka setelah login.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Fitur
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Mahasiswa**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Presensi dengan memindai QR yang tampil di proyektor, lewat kamera HP atau unggah gambar.
+- Pre-test 15 menit dengan soal esai dan potongan kode. Berpindah tab atau aplikasi tercatat sebagai pelanggaran dan memotong waktu pengerjaan.
+- Unduh soal tugas, unggah jawaban PDF, dan lihat status pengumpulan.
+- Halaman nilai yang menampilkan skor pre-test, tugas, nilai tambahan, total, catatan asisten, dan status kelulusan.
+- Feedback setelah sesi selesai, plus pengumuman dari asisten.
 
-## Learning Laravel
+**Asisten**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Membuat dan mengatur sesi praktikum untuk kelas yang diampu.
+- Menampilkan QR presensi di proyektor. Token QR berputar otomatis dan hanya token terbaru yang berlaku; daftar kehadiran ikut diperbarui otomatis.
+- Menilai pre-test, tugas, dan nilai tambahan. Satu tugas per pertemuan.
+- Review jawaban PDF mahasiswa, menyusun soal pre-test, memantau pengerjaan, memberi peringatan, dan membuka kunci pre-test.
+- Mengelola pengumuman kelas.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Admin**
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- Data master kelas, mahasiswa, dan asisten.
+- Semua sesi dari seluruh kelas.
+- Export nilai per sesi dan rekap keseluruhan ke Excel.
 
-## Agentic Development
+## Teknologi
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+| Bagian    | Dipakai                                                                                    |
+| --------- | ------------------------------------------------------------------------------------------ |
+| Backend   | Laravel 13, PHP 8.3+                                                                       |
+| Database  | MySQL atau MariaDB (SQLite juga bisa untuk lokal)                                          |
+| Frontend  | Blade, Tailwind CSS, Alpine.js, jQuery, Vite                                               |
+| Pendukung | endroid/qr-code (QR SVG), maatwebsite/excel (export), html5-qrcode, Chart.js, highlight.js |
+
+URL resource memakai UUID, bukan ID angka. Zona waktu default `Asia/Makassar`.
+
+## Tim Kelompok 6 Ilmu Komputer B
+
+| Nama                                 | NIM       | Peran                              | Fokus kerja                                   |
+| ------------------------------------ | --------- | ---------------------------------- | --------------------------------------------- |
+| Muhammad Hidayat                     | F1G125043 | Sprint Orchestrator & Quality Gate | Scrum Master, pengujian, dan kontrol kualitas |
+| Fitria Rizki Oktavia                 | F1G125006 | Visual Experience Architect        | Desain antarmuka dan aset visual              |
+| Siti Munawara                        | F1G125018 | Data Architect & Schema Engineer   | Migrasi database dan seeder                   |
+| Purnama Fatmawansyah Tri Putra Kilat | F1G125071 | Backend Flow Architect             | Controller dan pengaturan route               |
+| Zolahuddin Ahmad                     | F1G125053 | Interface Markup Engineer          | Tampilan web berbasis HTML/Blade              |
+
+## Instalasi
+
+Kebutuhan:
+
+- PHP 8.3 atau lebih baru dengan ekstensi `pdo_mysql`, `mbstring`, `openssl`, `ctype`, `fileinfo`, `tokenizer`, `xml`, `zip`, `gd`, `iconv`
+- Composer 2
+- Node.js 22 dan npm
+- MySQL 8 atau MariaDB
+
+Langkah di lokal:
 
 ```bash
-composer require laravel/boost --dev
+git clone <url-repositori> si-prog
+cd si-prog
 
-php artisan boost:install
+composer install
+cp .env.example .env
+php artisan key:generate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Buka `.env`, lalu sesuaikan bagian ini:
 
-## Contributing
+```env
+APP_NAME="SI-PROG"
+APP_URL=http://localhost:8000
+APP_TIMEZONE=Asia/Makassar
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=si_prog
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Code of Conduct
+Buat database dan jalankan migrasi:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+mysql -u root -p -e "CREATE DATABASE si_prog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
-## Security Vulnerabilities
+php artisan migrate
+npm install
+npm run build
+php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Aplikasi terbuka di `http://127.0.0.1:8000`.
 
-## License
+### Data awal (opsional)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+`php artisan db:seed` mengisi kelas, asisten, dan mahasiswa dari file `PRAKTIKUM MATAKULIAH ALGORITMA PEMROGRAMAN (ALPRO).xlsx` di root proyek. Proses ini **menghapus data yang sudah ada**, jadi jangan jalankan di server yang sudah dipakai.
+
+```bash
+php artisan db:seed
+```
+
+Akun admin memakai `SEED_ADMIN_EMAIL` dan `SEED_ADMIN_PASSWORD` dari `.env`. Kalau `SEED_ADMIN_PASSWORD` kosong, seeder membuat kata sandi acak dan menampilkannya sekali di terminal. Akun mahasiswa dan asisten memakai NIM sebagai kata sandi awal, jadi ganti sebelum dipakai di server publik.
+
+## Menjalankan saat pengembangan
+
+```bash
+php artisan serve
+npm run dev
+```
+
+Jalankan keduanya di terminal terpisah. `npm run dev` menyediakan hot reload untuk CSS dan JavaScript. Untuk mengecek hasil build:
+
+```bash
+npm run build
+```
+
+## Pengujian
+
+```bash
+php artisan test
+```
+
+Test memakai SQLite in-memory sesuai `phpunit.xml`, jadi ekstensi `pdo_sqlite` perlu aktif.
+
+## Deploy
+
+Panduan lengkap ada di [`docs/DEPLOY-CHECKLIST.md`](docs/DEPLOY-CHECKLIST.md). Poin yang sering terlewat: `public/build` harus ikut terunggah, `APP_URL` harus memakai domain HTTPS yang benar, dan batas upload PHP minimal 12 MB.
+
+## Lisensi
+
+Aplikasi ini dibangun di atas Laravel dan memakai lisensi MIT.
